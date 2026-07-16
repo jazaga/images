@@ -72,11 +72,13 @@ jobs:
       - name: Configure pacman mirrorlist
         shell: bash
         run: |
+          echo "::group::Original mirrorlist"
+          cat ./mountpoint/etc/pacman.d/mirrorlist
+          echo "::endgroup::"
           sudo arch-chroot ./mountpoint bash - <<'EOF'
-          sed -i 's|Server = http://mirror.archlinuxarm.org/$arch/$repo|# Server = http://mirror.archlinuxarm.org/$arch/$repo|g' /etc/pacman.d/mirrorlist
-          sed -i 's|# Server = http://eu.mirror.archlinuxarm.org/$arch/$repo|Server = http://eu.mirror.archlinuxarm.org/$arch/$repo|g' /etc/pacman.d/mirrorlist
+          echo "Server = http://eu.mirror.archlinuxarm.org/\$arch/\$repo" > /etc/pacman.d/mirrorlist
+          echo "Server = http://mirror.archlinuxarm.org/\$arch/\$repo" >> /etc/pacman.d/mirrorlist
           EOF
-
       - name: Delete default user
         shell: bash
         run: |
