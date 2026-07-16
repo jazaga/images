@@ -120,9 +120,10 @@ jobs:
           pacman -R --noconfirm linux-aarch64
           EOF
 
-      - name: Update system
+           - name: Update system
         shell: bash
         run: |
+          echo "Server = http://archlinuxarm.org\$arch/\$repo" | sudo tee ./mountpoint/etc/pacman.d/mirrorlist
           sudo arch-chroot ./mountpoint bash - <<'EOF'
           pacman -Syu --noconfirm
           EOF
